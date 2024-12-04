@@ -27,32 +27,76 @@ const users: ReadonlyArray<GoogleIdentity | AppleIdentity | RedditIdentity> = [
 
 class GoogleIdentityProcessor {
   findById(id: string): GoogleIdentity | undefined {
-    return users.find((user) => user.id === id && user.provider === 'google') as GoogleIdentity | undefined;
+    return users.find((user) => user.id === id && user.provider === 'google') as
+      | GoogleIdentity
+      | undefined;
   }
 
   findByUserName(userName: string): GoogleIdentity | undefined {
-    return users.find((user) => user.userName === userName && user.provider === 'google') as GoogleIdentity | undefined;
+    return users.find((user) => user.userName === userName && user.provider === 'google') as
+      | GoogleIdentity
+      | undefined;
   }
 }
 
 class AppleIdentityProcessor {
   findById(id: string): AppleIdentity | undefined {
-    return users.find((user) => user.id === id && user.provider === 'apple') as AppleIdentity | undefined;
+    return users.find((user) => user.id === id && user.provider === 'apple') as
+      | AppleIdentity
+      | undefined;
   }
 
   findByUserName(userName: string): AppleIdentity | undefined {
-    return users.find((user) => user.userName === userName && user.provider === 'apple') as AppleIdentity | undefined;
+    return users.find((user) => user.userName === userName && user.provider === 'apple') as
+      | AppleIdentity
+      | undefined;
   }
 }
 
 class RedditIdentityProcessor {
   findById(id: string): RedditIdentity | undefined {
-    return users.find((user) => user.id === id && user.provider === 'reddit') as RedditIdentity | undefined;
+    return users.find((user) => user.id === id && user.provider === 'reddit') as
+      | RedditIdentity
+      | undefined;
   }
 
   findByUserName(userName: string): RedditIdentity | undefined {
-    return users.find((user) => user.userName === userName && user.provider === 'reddit') as RedditIdentity | undefined;
+    return users.find((user) => user.userName === userName && user.provider === 'reddit') as
+      | RedditIdentity
+      | undefined;
   }
 }
 
-export class IdentityProcessor {}
+export class IdentityProcessor {
+  constructor(private provider: string) {
+    this.provider = provider;
+  }
+
+  findById(id: string) {
+    switch (this.provider) {
+      case 'google':
+        const googleIdentityProcessor = new GoogleIdentityProcessor();
+        return googleIdentityProcessor.findById(id);
+      case 'apple':
+        const appleIdentityProcessor = new AppleIdentityProcessor();
+        return appleIdentityProcessor.findById(id);
+      case 'reddit':
+        const redditIdentityProcessor = new RedditIdentityProcessor();
+        return redditIdentityProcessor.findById(id);
+    }
+  }
+
+  findByUserName(userName: string) {
+    switch (this.provider) {
+      case 'google':
+        const googleIdentityProcessor = new GoogleIdentityProcessor();
+        return googleIdentityProcessor.findByUserName(userName);
+      case 'apple':
+        const appleIdentityProcessor = new AppleIdentityProcessor();
+        return appleIdentityProcessor.findByUserName(userName);
+      case 'reddit':
+        const redditIdentityProcessor = new RedditIdentityProcessor();
+        return redditIdentityProcessor.findByUserName(userName);
+    }
+  }
+}
