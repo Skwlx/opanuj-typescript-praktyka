@@ -13,7 +13,7 @@ describe('Type props', () => {
 
   test('should display default props', async () => {
     // Render the component
-    render(<App />);
+    render(<App content="Ciesz się procesem nauki TSa z Reactem 🧑🏻‍💻" title="Witamy w React Pro!" />);
 
     // Check initial state
     expect(screen.getByText('Witamy w React Pro!')).toBeInTheDocument();
