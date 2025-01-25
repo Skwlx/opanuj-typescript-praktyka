@@ -2,7 +2,9 @@
   Dodaj typowanie propsa children dla FlexibleContainer, które pozwoli na przekazanie dowolnego dziecka (komponent(y), element(y), tekst itd.)
 */
 
-const FlexibleContainer = ({ children }) => <ul className="list-disc">{children}</ul>;
+const FlexibleContainer = ({ children }: { children: React.ReactNode }) => (
+  <ul className="list-disc">{children}</ul>
+);
 
 const App = () => (
   <FlexibleContainer>
