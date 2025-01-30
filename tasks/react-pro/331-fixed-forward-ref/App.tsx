@@ -4,117 +4,132 @@
 3. Zadbaj o poprawne typowanie handlerów i stanu.
 */
 
-import { useRef, useState } from 'react';
+import { ComponentProps, useRef, useState } from 'react';
 import { fixedForwardRef } from './fixed-foward-ref';
 
-const FormComponent = fixedForwardRef((props: any, ref) => {
-  return (
-    <form
-      ref={ref}
-      onSubmit={props.handleSubmit}
-      className="p-6 mx-auto mt-8 bg-white rounded-lg shadow-md w-96"
-    >
-      <div className="space-y-4">
-        <div>
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            required
-            defaultValue={props.initialData.name}
-            className="block w-full mt-1 text-gray-800 border-gray-800 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          />
-        </div>
+type FormData = {
+  name: string;
+  email: string;
+  age: number;
+  occupation: string;
+  bio: string;
+};
 
-        <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            defaultValue={props.initialData.email}
-            required
-            className="block w-full mt-1 text-gray-800 border-gray-800 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          />
-        </div>
+type FormProps = {
+  initialData: FormData;
+  handleSubmit: ComponentProps<'form'>['onSubmit'];
+};
 
-        <div>
-          <label htmlFor="age" className="block text-sm font-medium text-gray-700">
-            Age
-          </label>
-          <input
-            type="number"
-            id="age"
-            name="age"
-            defaultValue={props.initialData.age}
-            required
-            className="block w-full mt-1 text-gray-800 border-gray-800 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          />
-        </div>
+const FormComponent = fixedForwardRef(
+  (props: FormProps, ref: React.ForwardedRef<HTMLFormElement>) => {
+    return (
+      <form
+        ref={ref}
+        onSubmit={props.handleSubmit}
+        className="p-6 mx-auto mt-8 bg-white rounded-lg shadow-md w-96"
+      >
+        <div className="space-y-4">
+          <div>
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              required
+              defaultValue={props.initialData.name}
+              className="block w-full mt-1 text-gray-800 border-gray-800 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
 
-        <div>
-          <label htmlFor="occupation" className="block text-sm font-medium text-gray-700">
-            Occupation
-          </label>
-          <select
-            id="occupation"
-            name="occupation"
-            defaultValue={props.initialData.occupation}
-            required
-            className="block w-full mt-1 text-gray-800 border-gray-800 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+          <div>
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              defaultValue={props.initialData.email}
+              required
+              className="block w-full mt-1 text-gray-800 border-gray-800 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="age" className="block text-sm font-medium text-gray-700">
+              Age
+            </label>
+            <input
+              type="number"
+              id="age"
+              name="age"
+              defaultValue={props.initialData.age}
+              required
+              className="block w-full mt-1 text-gray-800 border-gray-800 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+
+          <div>
+            <label htmlFor="occupation" className="block text-sm font-medium text-gray-700">
+              Occupation
+            </label>
+            <select
+              id="occupation"
+              name="occupation"
+              defaultValue={props.initialData.occupation}
+              required
+              className="block w-full mt-1 text-gray-800 border-gray-800 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            >
+              <option value="">Select occupation</option>
+              <option value="developer">Developer</option>
+              <option value="designer">Designer</option>
+              <option value="manager">Manager</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label htmlFor="bio" className="block text-sm font-medium text-gray-700">
+              Bio
+            </label>
+            <textarea
+              id="bio"
+              name="bio"
+              rows={3}
+              defaultValue={props.initialData.bio}
+              className="block w-full mt-1 text-gray-800 border-gray-800 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
           >
-            <option value="">Select occupation</option>
-            <option value="developer">Developer</option>
-            <option value="designer">Designer</option>
-            <option value="manager">Manager</option>
-            <option value="other">Other</option>
-          </select>
+            Submit
+          </button>
         </div>
-
-        <div>
-          <label htmlFor="bio" className="block text-sm font-medium text-gray-700">
-            Bio
-          </label>
-          <textarea
-            id="bio"
-            name="bio"
-            rows={3}
-            defaultValue={props.initialData.bio}
-            className="block w-full mt-1 text-gray-800 border-gray-800 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full px-4 py-2 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-        >
-          Submit
-        </button>
-      </div>
-    </form>
-  );
-});
+      </form>
+    );
+  },
+);
 
 const App = () => {
-  const formRef = useRef(null);
-  const [submittedData, setSubmittedData] = useState(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const [submittedData, setSubmittedData] = useState<FormData | null>(null);
 
-  const handleSubmit = (e) => {
+  const handleSubmit: ComponentProps<'form'>['onSubmit'] = (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    const data = {
-      name: formData.get('name'),
-      email: formData.get('email'),
+    const data: FormData = {
+      name: formData.get('name')?.toString() || '',
+      email: formData.get('email')?.toString() || '',
       age: Number(formData.get('age')),
-      occupation: formData.get('occupation'),
-      bio: formData.get('bio'),
+      occupation: formData.get('occupation')?.toString() || '',
+      bio: formData.get('bio')?.toString() || '',
     };
-    setSubmittedData(data);
+    setSubmittedData((): FormData => data);
   };
 
   const initialData = {
