@@ -42,7 +42,7 @@ describe('Fixed forward ref', () => {
   });
 
   test('should prevent adding extra properties to state', async () => {
-    const fileContent = await fsPromises.readFile(join(__dirname, 'fixed-forward-ref.ts'), 'utf8');
+    const fileContent = await fsPromises.readFile(join(__dirname, 'fixed-foward-ref.ts'), 'utf8');
     const refInferenceGeneric = Buffer.from('52656641747472696275746573', 'hex').toString(); // encoded type to prevent spoiler
     try {
       expect(fileContent.includes(refInferenceGeneric)).toBe(true);
