@@ -2,7 +2,23 @@
 
 import { useReducer, useState } from 'react';
 
-const taskReducer = (state, action) => {
+type Task = {
+  id: number;
+  text: string;
+  completed: boolean;
+};
+
+type StateType = {
+  tasks: Task[];
+};
+
+type ActionType =
+  | { type: 'add'; payload: string }
+  | { type: 'remove'; payload: number }
+  | { type: 'toggle'; payload: number }
+  | { type: 'unknown' };
+
+const taskReducer = (state: StateType, action: ActionType) => {
   switch (action.type) {
     case 'add':
       const newTask = { id: Date.now(), text: action.payload, completed: false };
