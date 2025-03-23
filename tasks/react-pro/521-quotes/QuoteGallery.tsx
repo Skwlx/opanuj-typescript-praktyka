@@ -1,45 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Quote as QuoteIcon, ChevronLeft, ChevronRight } from 'lucide-react';
 import { getQuotes } from './api/quotes-api';
-import { QuotesResponse } from './model/QuotesResponse';
+import { useQuery } from '@tanstack/react-query';
 
 export function QuoteGallery() {
   const [page, setPage] = useState(0);
-  const [data, setData] = useState<QuotesResponse | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const limit = '5';
+  const limit = 5;
 
-  useEffect(() => {
-    const fetchQuotes = async () => {
-      setIsLoading(true);
-      try {
-        const response = await getQuotes(page, limit);
-        setData(response);
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+  const quotesQuery = useQuery({
+    queryKey: ['quotes', page, limit],
+    queryFn: () => getQuotes(page, limit),
+    placeholderData: (prev) => prev,
+  });
 
-    fetchQuotes();
-  }, [page]);
-
-  if (isLoading) {
+  if (quotesQuery.isLoading) {
     return <div className="text-gray-200">Loading...</div>;
   }
 
-  if (!data) {
-    return null;
-  }
-
-  const totalPages = Math.ceil(data.total / limit);
+  const totalPages = Math.ceil((quotesQuery.data?.total || 0) / limit);
 
   return (
     <div className="flex flex-col gap-4">
       <h1 className="text-2xl font-bold text-gray-200">Quote Gallery</h1>
       <div className="flex flex-col gap-4" data-testid="quote-gallery">
-        {data.quotes.map((quote) => (
+        {quotesQuery.data?.quotes.map((quote) => (
           <div
             key={quote.id}
             className="p-6 rounded-xl bg-gray-900 border border-gray-800 hover:border-gray-700 transition-colors shadow-lg"
@@ -59,7 +43,7 @@ export function QuoteGallery() {
         <button
           onClick={() => setPage((p) => Math.max(0, p - 1))}
           data-testid="previous-page-button"
-          disabled={page === -1}
+          disabled={page === 0}
           className="px-4 py-2 bg-gray-800 text-gray-200 rounded-lg disabled:bg-gray-900 disabled:text-gray-600 hover:bg-gray-700 transition-colors flex items-center gap-2"
         >
           <ChevronLeft className="w-4 h-4" />
