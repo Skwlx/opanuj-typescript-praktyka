@@ -2,10 +2,19 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Planet, SWAPIResponse } from '../types';
 
-interface PlanetsGridProps<> {}
+interface PlanetsGridProps<As extends React.ElementType> {
+  columns: number;
+  children: (planet: Planet) => React.ReactNode;
+  as?: As;
+}
 
-export function PlanetsGrid({}: PlanetsGridProps) {
+export function PlanetsGrid<As extends React.ElementType = 'div'>({
+  columns,
+  children,
+  as,
+}: PlanetsGridProps<As>) {
   const [planets, setPlanets] = useState<Planet[]>([]);
+  const Component = as || 'div';
 
   useEffect(() => {
     const fetchPlanets = async () => {
@@ -24,9 +33,9 @@ export function PlanetsGrid({}: PlanetsGridProps) {
     <div className=" bg-gray-900" data-testid="planets-grid">
       <div className={`grid gap-6 grid-cols-1 md:grid-cols-${columns} auto-rows-fr`}>
         {planets.map((planet) => (
-          <div key={planet.url} className="h-full">
+          <Component key={planet.url} className="h-full">
             {children(planet)}
-          </div>
+          </Component>
         ))}
       </div>
     </div>
